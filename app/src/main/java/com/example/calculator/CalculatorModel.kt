@@ -25,7 +25,7 @@ class CalculatorModel {
             state = State.SecondArgInput
             inputStr.setLength(0)
         }
-        if (inputStr.length < 8) {
+        if (inputStr.length < 9) {
             when (buttonId) {
                 R.id.zero ->
                     if (inputStr.isNotEmpty())
@@ -78,12 +78,24 @@ class CalculatorModel {
         }
     }
 
+    private  fun correctOutput(str: String): String{
+        return if(str.length <= 9)
+            str
+        else{
+            if(str.contains('E')){
+                '≈' + str.substring(0, 6)+'E'+str.substringAfter('E')
+            } else {
+                '≈' + str.substring(0, 9)
+            }
+        }
+    }
+
     fun getText(): String {
         return when (state) {
-            State.OperationSelected -> firstArg.toString()
-            State.SecondArgInput -> inputStr.toString()
-            State.ResultShow -> inputStr.toString()
-            else -> inputStr.toString()
+            State.OperationSelected -> correctOutput(firstArg.toString())
+            State.SecondArgInput -> correctOutput(inputStr.toString())
+            State.ResultShow -> correctOutput(inputStr.toString())
+            else -> correctOutput(inputStr.toString())
         }
     }
 
