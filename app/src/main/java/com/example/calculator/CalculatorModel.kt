@@ -2,28 +2,27 @@ package com.example.calculator
 
 class CalculatorModel {
 
-
     private var firstArg = 0.0
     private var secondArg = 0.0
 
-    private val inputStr = StringBuilder()
+    private var inputStr = StringBuilder()
 
     private var actionSelected = 0
 
     private enum class State {
-        firstArgInput, operationSelected, secondArgInput, resultShow
+        FirstArgInput, OperationSelected, SecondArgInput, ResultShow
     }
 
-    private var state: State = State.firstArgInput
+    private var state: State = State.FirstArgInput
 
 
     fun onNumPressed(buttonId: Int) {
-        if (state == State.resultShow) {
-            state = State.firstArgInput
+        if (state == State.ResultShow) {
+            state = State.FirstArgInput
             inputStr.setLength(0)
         }
-        if (state == State.operationSelected) {
-            state = State.secondArgInput
+        if (state == State.OperationSelected) {
+            state = State.SecondArgInput
             inputStr.setLength(0)
         }
         if (inputStr.length < 8) {
@@ -47,14 +46,27 @@ class CalculatorModel {
                         inputStr.append("0.")
                     else if(!inputStr.contains("."))
                         inputStr.append(".")
+                R.id.sign ->
+                    if(inputStr.isNotEmpty())
+                        inputStr = StringBuilder((inputStr.toString().toDouble()*(-1)).toString())
             }
         }
     }
 
     fun onActionPressed(actionId: Int) {
-        if (actionId == R.id.equals && state == State.secondArgInput && inputStr.isNotEmpty()) {
+        if(state == State.ResultShow && actionId != R.id.equals){
+            firstArg = inputStr.toString().toDouble()
+            state = State.OperationSelected
+            actionSelected = actionId
+        }
+        if (state == State.FirstArgInput && actionId != R.id.equals && inputStr.isNotEmpty() ) {
+            firstArg = inputStr.toString().toDouble()
+            state = State.OperationSelected
+            actionSelected = actionId
+        }
+        if (state == State.SecondArgInput && actionId == R.id.equals && inputStr.isNotEmpty()) {
             secondArg = inputStr.toString().toDouble()
-            state = State.resultShow
+            state = State.ResultShow
             inputStr.setLength(0)
             when (actionSelected) {
                 R.id.plus -> inputStr.append(firstArg + secondArg)
@@ -63,25 +75,20 @@ class CalculatorModel {
                 R.id.division -> inputStr.append(firstArg / secondArg)
                 R.id.remainder -> inputStr.append(firstArg % secondArg)
             }
-        } else if (inputStr.isNotEmpty() && state == State.firstArgInput && actionId != R.id.equals) {
-            firstArg = inputStr.toString().toDouble()
-            state = State.operationSelected
-            actionSelected = actionId
         }
     }
 
     fun getText(): String {
-        val str = StringBuilder()
         return when (state) {
-            State.operationSelected -> str.append(firstArg).toString()
-            State.secondArgInput -> str.append(inputStr).toString()
-            State.resultShow -> str.append(inputStr.toString()).toString()
+            State.OperationSelected -> firstArg.toString()
+            State.SecondArgInput -> inputStr.toString()
+            State.ResultShow -> inputStr.toString()
             else -> inputStr.toString()
         }
     }
 
     fun reset() {
-        state = State.firstArgInput
+        state = State.FirstArgInput
         inputStr.setLength(0)
     }
 }

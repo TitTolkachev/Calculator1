@@ -35,7 +35,7 @@
             app:layout_constraintEnd_toStartOf="@+id/nine"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/seven"
-            app:layout_constraintTop_toBottomOf="@+id/memory"
+            app:layout_constraintTop_toBottomOf="@+id/sign"
             tools:text="8" />
 
         <Button
@@ -152,7 +152,7 @@
             android:translationZ="2dp"
             app:cornerRadius="20dp"
             app:layout_constraintBottom_toTopOf="@+id/seven"
-            app:layout_constraintEnd_toStartOf="@+id/memory"
+            app:layout_constraintEnd_toStartOf="@+id/sign"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -194,12 +194,12 @@
             app:layout_constraintBottom_toTopOf="@+id/nine"
             app:layout_constraintEnd_toStartOf="@+id/division"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/memory"
+            app:layout_constraintStart_toEndOf="@+id/sign"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="%" />
 
         <Button
-            android:id="@+id/memory"
+            android:id="@+id/sign"
             android:layout_width="80dp"
             android:layout_height="90dp"
             android:backgroundTint="#F1F3F6"
